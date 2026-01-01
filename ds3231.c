@@ -141,12 +141,12 @@ esp_err_t ds3231_init(SemaphoreHandle_t *i2c_mux, i2c_master_dev_handle_t *i2c, 
     ctp_xfer_time_out = xfer_time_out;
 
     ESP_RETURN_ON_ERROR(ds_iic_readReg(0x02, &reg, 1), TAG, "init io err");
-    if (reg | DS3231_HOUR_FMT_MSK)
+
+    if ((reg & DS3231_HOUR_FMT_MSK))
     {
         ESP_LOGW(TAG, "in 12h mode , set to 24h mode");
         // 12h
         reg = reg & (~DS3231_HOUR_FMT_MSK);
-
         ESP_RETURN_ON_ERROR(ds_iic_writeReg(0x02, &reg, 1), TAG, "init write hout fmt err");
     } // DS3231_HOUR_FMT_MSK
 
